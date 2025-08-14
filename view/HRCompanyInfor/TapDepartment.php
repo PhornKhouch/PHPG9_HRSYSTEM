@@ -2,36 +2,32 @@
 include("../../Config/conect.php");
 ?>
 
-<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-    <table id="companyTable" class="table table-striped" style="width:100%">
+
+    <table id="departmentTable" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th style="width: 150px">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
-                        Add
-                    </button>
-                </th>
-                <th>Company Code</th>
-                <th>Company Name</th>
+                <th style="width: 150px"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDeptModal">Add</button></th>
+                <th>Department Code</th>
+                <th>Department Name</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody id="data">
             <?php
-            $sql = "SELECT * FROM hrcompany";
+            $sql = "SELECT * FROM hrdepartment";
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
             ?>
                     <tr data-id="<?php echo $row['Code']; ?>">
                         <td>
-                            <button class="btn btn-primary btn-sm edit-btn"
-                                data-code="<?php echo $row['Code']; ?>"
-                                data-name="<?php echo $row['Description']; ?>"
-                                data-status="<?php echo $row['Status']; ?>">
+                            <button class="btn btn-primary btn-sm edit-dept-btn" 
+                                    data-code="<?php echo $row['Code']; ?>"
+                                    data-name="<?php echo $row['Description']; ?>"
+                                    data-status="<?php echo $row['Status']; ?>">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn">
+                            <button class="btn btn-danger btn-sm delete-dept-btn" data-code="<?php echo $row['Code']; ?>">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </td>
@@ -45,29 +41,29 @@ include("../../Config/conect.php");
             ?>
         </tbody>
     </table>
-</div>
+
 
 <!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+<div class="modal fade" id="addDeptModal" tabindex="-1" aria-labelledby="addDeptModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Add New Company</h5>
+                <h5 class="modal-title" id="addDeptModalLabel">Add New Department</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addForm">
+                <form id="addDeptForm">
                     <div class="mb-3">
-                        <label for="code" class="form-label">Company Code</label>
-                        <input type="text" class="form-control" id="code" required>
+                        <label for="code" class="form-label">Department Code</label>
+                        <input type="text" class="form-control" id="DeptCode" required>
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="name" required>
+                        <label for="name" class="form-label">Department Name</label>
+                        <input type="text" class="form-control" id="DeptName" required>
                     </div>
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status" required>
+                        <select class="form-control" id="DeptStatus" required>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
@@ -76,30 +72,30 @@ include("../../Config/conect.php");
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="save">Save</button>
+                <button type="button" class="btn btn-primary" id="saveDept">Save</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editDeptModal" tabindex="-1" aria-labelledby="editDeptModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Company</h5>
+                <h5 class="modal-title" id="editDeptModalLabel">Edit Department</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editForm">
-                    <input type="hidden" id="edit_code">
+                <form id="editDeptForm">
+                    <input type="hidden" id="edit_dept_code">
                     <div class="mb-3">
                         <label for="edit_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="edit_name" required>
+                        <input type="text" class="form-control" id="edit_dept_name" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_status" class="form-label">Status</label>
-                        <select class="form-control" id="edit_status" required>
+                        <select class="form-control" id="edit_dept_status" required>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
@@ -108,72 +104,67 @@ include("../../Config/conect.php");
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="update">Update</button>
+                <button type="button" class="btn btn-primary" id="updateDept">Update</button>
             </div>
         </div>
     </div>
 </div>
-<?php
-    include '../../root/DataTable.php';
-?>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
         // Initialize DataTable
-        var table = $('#companyTable').DataTable({
+        const table = $('#departmentTable').DataTable({
             responsive: true,
-            lengthMenu: [5, 10, 25, 50],
-            pageLength: 10,
-            order: [
-                [1, 'asc']
-            ],
-            columnDefs: [{
-                targets: 0,
-                orderable: false,
-                searchable: false
-            }]
+            lengthChange: true,
+            autoWidth: false
         });
 
-        // Add new company
-        $('#save').click(function() {
-            if (!$('#addForm')[0].checkValidity()) {
-                $('#addForm')[0].reportValidity();
+        // Add new department
+        $('#saveDept').click(function() {
+            if (!$('#addDeptForm')[0].checkValidity()) {
+                $('#addDeptForm')[0].reportValidity();
                 return;
             }
+
             $.ajax({
                 url: "../../action/CompanyInfor/create.php",
                 type: "POST",
                 data: {
-                    type: "Company",
-                    code: $('#code').val(),
-                    name: $('#name').val(),
-                    status: $('#status').val()
+                    type: "Department",
+                    code: $('#DeptCode').val(),
+                    name: $('#DeptName').val(),
+                    status: $('#DeptStatus').val()
                 },
                 success: function(response) {
-                    if (response.includes("Data Inserted")) { // or use a better condition based on your backend
-                        table.row.add([
-                            `<button class="btn btn-primary btn-sm edit-btn" data-code="${$('#code').val()}" data-name="${$('#name').val()}" data-status="${$('#status').val()}">
+                    if (response.includes("Data Inserted")) {
+                            table.row.add([
+                            `<button class="btn btn-primary btn-sm edit-dept-btn" data-code="${$('#DeptCode').val()}" data-name="${$('#DeptName').val()}" data-status="${$('#DeptStatus').val()}">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn">
+                            <button class="btn btn-danger btn-sm delete-dept-btn" data-code="${$('#DeptCode').val()}">
                                 <i class="fas fa-trash"></i> Delete
                             </button>`,
-                            $('#code').val(),
-                            $('#name').val(),
-                            $('#status').val()
+                            $('#DeptCode').val(),
+                            $('#DeptName').val(),
+                            $('#DeptStatus').val()
                         ]).draw(false);
 
-                        $('#addModal').modal('hide');
+                        // Hide modal and clean up
+                        const modal = bootstrap.Modal.getInstance($('#addDeptModal'));
+                        modal.hide();
                         $('.modal-backdrop').remove();
                         $('body').removeClass('modal-open');
-
-                        $('#code').val('');
-                        $('#name').val('');
-                        $('#status').val('Active');
+                        
+                        // Clear form
+                        $('#DeptCode').val('');
+                        $('#DeptName').val('');
+                        $('#DeptStatus').val('Active');
 
                         showToast('success', response);
-                    } else {
-                        showToast('danger', response);
+                    }
+                    else{
+                        showToast('danger', response); 
                     }
                 },
                 error: function(xhr) {
@@ -183,34 +174,34 @@ include("../../Config/conect.php");
         });
 
         // Edit button click handler
-        $(document).on('click', '.edit-btn', function() {
+        $(document).on('click', '.edit-dept-btn', function() {
             const code = $(this).data('code');
             const name = $(this).data('name');
             const status = $(this).data('status');
 
-            $('#edit_code').val(code);
-            $('#edit_name').val(name);
-            $('#edit_status').val(status);
+            $('#edit_dept_code').val(code);
+            $('#edit_dept_name').val(name);
+            $('#edit_dept_status').val(status);
 
-            $('#editModal').modal('show');
+            $('#editDeptModal').modal('show');
         });
 
         // Update company
-        $('#update').click(function() {
-            if (!$('#editForm')[0].checkValidity()) {
-                $('#editForm')[0].reportValidity();
+        $('#updateDept').click(function() {
+            if (!$('#editDeptForm')[0].checkValidity()) {
+                $('#editDeptForm')[0].reportValidity();
                 return;
             }
 
-            const code = $('#edit_code').val();
-            const name = $('#edit_name').val();
-            const status = $('#edit_status').val();
+            const code = $('#edit_dept_code').val();
+            const name = $('#edit_dept_name').val();
+            const status = $('#edit_dept_status').val();
 
             $.ajax({
                 url: "../../action/CompanyInfor/update.php",
                 type: "POST",
                 data: {
-                    "type": "Company",
+                    "type": "Department",
                     "code": code,
                     "name": name,
                     "status": status
@@ -221,14 +212,14 @@ include("../../Config/conect.php");
                     rowData[0] = `<button class="btn btn-primary btn-sm edit-btn" data-code="${code}" data-name="${name}" data-status="${status}">
                                     <i class="fas fa-edit"></i> Edit
                                  </button>
-                                 <button class="btn btn-danger btn-sm delete-btn">
+                                 <button class="btn btn-danger btn-sm delete-btn" data-code="${code}">
                                     <i class="fas fa-trash"></i> Delete
                                  </button>`;
                     rowData[2] = name;
                     rowData[3] = status;
                     row.data(rowData).draw(false);
 
-                    $('#editModal').modal('hide');
+                    $('#editDeptModal').modal('hide');
                     $('.modal-backdrop').remove();
                     $('body').removeClass('modal-open');
 
@@ -241,9 +232,9 @@ include("../../Config/conect.php");
         });
 
         // Delete button click handler
-        $(document).on('click', '.delete-btn', function() {
+        $(document).on('click', '.delete-dept-btn', function() {
             const row = $(this).closest('tr');
-            const code = row.data('id');
+            const code = $(this).data('code');
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -259,7 +250,7 @@ include("../../Config/conect.php");
                         url: "../../action/CompanyInfor/delete.php",
                         type: "POST",
                         data: {
-                            "type": "Company",
+                            "type": "Department",
                             "code": code
                         },
                         success: function(response) {
@@ -287,32 +278,26 @@ include("../../Config/conect.php");
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-            Toast.fire({
-                icon: icon,
-                title: title
-            });
+            Toast.fire({ icon, title });
         }
     });
 </script>
 
 <style>
-    .dataTables_wrapper .dataTables_length select {
-        width: 60px;
-    }
-
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        margin-right: 0.25rem;
-    }
-
-    .modal-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .modal-footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #dee2e6;
-    }
+.dataTables_wrapper .dataTables_length select {
+    width: 60px;
+}
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    margin-right: 0.25rem;
+}
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
 </style>

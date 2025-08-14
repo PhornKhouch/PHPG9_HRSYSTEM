@@ -20,10 +20,10 @@ include("../../root/Header.php");
                 <?php include("TapCompany.php"); ?>
             </div>
             <div class="tab-pane fade" id="nav-Dept" role="tabpanel" aria-labelledby="nav-Dept-tab">
-                <?php include("TabDepartment.php"); ?>
+                <?php include("TapDepartment.php"); ?>
             </div>
             <div class="tab-pane fade" id="nav-division" role="tabpanel" aria-labelledby="nav-division-tab">
-                
+                <?php include("TapDivision.php"); ?>
             </div>
             <div class="tab-pane fade" id="nav-level" role="tabpanel" aria-labelledby="nav-level-tab">
                 
