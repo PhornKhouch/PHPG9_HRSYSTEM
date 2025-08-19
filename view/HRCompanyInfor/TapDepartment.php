@@ -153,7 +153,7 @@ include("../../Config/conect.php");
                         // Hide modal and clean up
                         const modal = bootstrap.Modal.getInstance($('#addDeptModal'));
                         modal.hide();
-                        $('.modal-backdrop').remove();
+                        // $('.modal-backdrop').remove();
                         $('body').removeClass('modal-open');
                         
                         // Clear form
@@ -220,7 +220,7 @@ include("../../Config/conect.php");
                     row.data(rowData).draw(false);
 
                     $('#editDeptModal').modal('hide');
-                    $('.modal-backdrop').remove();
+                    // $('.modal-backdrop').remove();
                     $('body').removeClass('modal-open');
 
                     showToast('success', response);
