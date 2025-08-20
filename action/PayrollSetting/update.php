@@ -23,75 +23,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sun = isset($_POST['sun']) ? 1 : 0;
 
         // Get hours for each day, default to 8 if not set
-        $monHours = isset($_POST['mon_hours']) ? intval($_POST['mon_hours']) : 8;
-        $tueHours = isset($_POST['tue_hours']) ? intval($_POST['tue_hours']) : 8;
-        $wedHours = isset($_POST['wed_hours']) ? intval($_POST['wed_hours']) : 8;
-        $thuHours = isset($_POST['thu_hours']) ? intval($_POST['thu_hours']) : 8;
-        $friHours = isset($_POST['fri_hours']) ? intval($_POST['fri_hours']) : 8;
-        $satHours = isset($_POST['sat_hours']) ? intval($_POST['sat_hours']) : 8;
-        $sunHours = isset($_POST['sun_hours']) ? intval($_POST['sun_hours']) : 8;
+        $monHours = isset($_POST['mon_hours']) ? $_POST['mon_hours'] : 8;
+        $tueHours = isset($_POST['tue_hours']) ? $_POST['tue_hours'] : 8;   
+        $wedHours = isset($_POST['wed_hours']) ? $_POST['wed_hours'] : 8;
+        $thuHours = isset($_POST['thu_hours']) ? $_POST['thu_hours'] : 8;
+        $friHours = isset($_POST['fri_hours']) ? $_POST['fri_hours'] : 8;
+        $satHours = isset($_POST['sat_hours']) ? $_POST['sat_hours'] : 8;
+        $sunHours = isset($_POST['sun_hours']) ? $_POST['sun_hours'] : 8;   
 
         // Prepare the update query
         $sql = "UPDATE prpaypolicy SET
-            description = ?, 
-            fromDate = ?,
-            toDate = ?,
-            hourperday = ?,
-            hourperweek = ?,
-            mon = ?,
-            monHours = ?,
-            tue = ?, 
-            tueHours = ?, 
-            wed = ?,
-            wedHours = ?,
-            thu = ?, 
-            thuHours = ?, 
-            fri = ?,
-            friHours = ?,
-            sat = ?,
-            satHours = ?,
-            sun = ?,
-            sunHours = ?
-            WHERE id = ?";
+            description = '$description', 
+            code = '$code',
+            fromDate = '$fromDate',
+            toDate = '$toDate',
+            hourperday = '$hourPerDay', 
+            hourperweek = '$workDay',
+            mon = '$mon',
+            monHours = '$monHours',
+            tue = '$tue', 
+            tueHours = '$tueHours', 
+            wed = '$wed',
+            wedHours = '$wedHours',
+            thu = '$thu', 
+            thuHours = '$thuHours', 
+            fri = '$fri',
+            friHours = '$friHours',
+            sat = '$sat',
+            satHours = '$satHours',
+            sun = '$sun',
+            sunHours = '$sunHours'
+            WHERE id = '$id'";
 
-        $stmt = $con->prepare($sql);
-        if (!$stmt) {
-            throw new Exception("Prepare failed: " . $con->error);
-        }
-
-        $stmt->bind_param("sssddidiidiidiidiiii", 
-            $description,
-            $fromDate,
-            $toDate,
-            $hourPerDay,
-            $hourPerWeek,
-            $mon,
-            $monHours,
-            $tue,
-            $tueHours,
-            $wed,
-            $wedHours,
-            $thu,
-            $thuHours,
-            $fri,
-            $friHours,
-            $sat,
-            $satHours,
-            $sun,
-            $sunHours,
-            $id
-        );
-
-        if (!$stmt->execute()) {
-            throw new Exception("Execute failed: " . $stmt->error);
-        }
-
+        $stmt = $con->query($sql);
         echo json_encode([
             'status' => 'success',
             'message' => 'Policy updated successfully'
         ]);
-        
-        $stmt->close();
     } catch (Exception $e) {
         error_log("Error in update.php: " . $e->getMessage());
         echo json_encode([

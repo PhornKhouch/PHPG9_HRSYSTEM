@@ -7,7 +7,7 @@
         exit();
     }
 
-    $id = intval($_GET['id']);
+    $id = isset($_GET['id']);
     $stmt = $con->prepare("SELECT * FROM prpaypolicy WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -238,7 +238,7 @@ $(document).ready(function() {
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data: formData,
+            data:  $(this).serialize(),
             dataType: 'json',
             success: function(response) {
                 console.log('Response:', response);

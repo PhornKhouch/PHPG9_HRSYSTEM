@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $friHours = $fri ? floatval($_POST['friHours']) : 0;
         $satHours = $sat ? floatval($_POST['satHours']) : 0;
         $sunHours = $sun ? floatval($_POST['sunHours']) : 0;
-
+        $totalHours = $monHours + $tueHours + $wedHours + $thuHours + $friHours + $satHours + $sunHours;
         // Calculate total work days
         //$workDay = $mon + $tue + $wed + $thu + $fri + $sat + $sun;
 
@@ -36,44 +36,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO prpaypolicy (code, description, workday, hourperday, hourperweek, fromdate, todate, 
                 mon, monhours, tues, tueshours, wed, wedhours, thur, thurhours, 
                 fri, frihours, sat, sathours, sun, sunhours) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                VALUES ('$code', '$description', '$workDay', '$hourPerDay', '', '$fromDate', '$toDate', 
+                '$mon', '$monHours', '$tue', '$tueHours', '$wed', '$wedHours', '$thu', '$thuHours', 
+                '$fri', '$friHours', '$sat', '$satHours', '$sun', '$sunHours')";
                 
-        $stmt = $con->prepare($sql);
+        $stmt = $con->query($sql);
         if (!$stmt) {
-            throw new Exception("Prepare failed: " . $con->error);
-            
+            throw new Exception("Query failed: " . $con->error);
         }
-
-        $stmt->bind_param("ssiiddssiiiiiiiiiiiii", 
-            $code,
-            $description,
-            $workDay,
-            $hourPerDay,
-            $hourPerWeek,
-            $fromDate,
-            $toDate,
-            $mon,
-            $monHours,
-            $tue,
-            $tueHours,
-            $wed,
-            $wedHours,
-            $thu,
-            $thuHours,
-            $fri,
-            $friHours,
-            $sat,
-            $satHours,
-            $sun,
-            $sunHours
-        );
-
-        if (!$stmt->execute()) {
-            throw new Exception("Execute failed: " . $stmt->error);
-        }
-
-        $stmt->close();
+        // Calculate total hours
         
+        // Check if total hours exceed 40
+        if ($totalHours > 48) {
+            throw new Exception("Total work hours cannot exceed 48 hours per week");
+        }
         // Return success response for AJAX
         echo json_encode([
             'status' => 'success',
