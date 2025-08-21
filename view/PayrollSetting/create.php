@@ -3,12 +3,13 @@
     include("../../Config/conect.php");
 ?>
 
-<!-- Add SweetAlert2 CSS and JS -->
+<!-- Add CSS and JS dependencies -->
 <link rel="stylesheet" href="../../Style/style.css">
+<link rel="stylesheet" href="../../Style/payrollsetting.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-4">
     <?php if (isset($_GET['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?php echo htmlspecialchars($_GET['error']); ?>

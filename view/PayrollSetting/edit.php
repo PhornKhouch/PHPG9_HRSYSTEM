@@ -7,7 +7,7 @@
         exit();
     }
 
-    $id = isset($_GET['id']);
+    $id = intval($_GET['id']);
     $stmt = $con->prepare("SELECT * FROM prpaypolicy WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -41,6 +41,7 @@
 ?>
 
 <!-- Add SweetAlert2 CSS and JS -->
+ <link rel="stylesheet" href="../../Style/payrollsetting.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
@@ -238,7 +239,7 @@ $(document).ready(function() {
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
-            data:  $(this).serialize(),
+            data: formData,
             dataType: 'json',
             success: function(response) {
                 console.log('Response:', response);

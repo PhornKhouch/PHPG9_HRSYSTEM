@@ -1,5 +1,11 @@
 
 /* Modern Card Styling with Colorful Schema */
+.container-fluid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
 .card {
     box-shadow: 0 10px 20px rgba(72, 87, 220, 0.08);
     border-radius: 12px;

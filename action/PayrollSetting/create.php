@@ -28,10 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $friHours = $fri ? floatval($_POST['friHours']) : 0;
         $satHours = $sat ? floatval($_POST['satHours']) : 0;
         $sunHours = $sun ? floatval($_POST['sunHours']) : 0;
+        // Calculate total hours
         $totalHours = $monHours + $tueHours + $wedHours + $thuHours + $friHours + $satHours + $sunHours;
-        // Calculate total work days
-        //$workDay = $mon + $tue + $wed + $thu + $fri + $sat + $sun;
-
+      
+        // Check if total hours exceed 40
+        if ($totalHours > 48) {
+            throw new Exception("Total work hours cannot exceed 48 hours per week");
+            exit();
+        }
         // Insert new record with lowercase column names
         $sql = "INSERT INTO prpaypolicy (code, description, workday, hourperday, hourperweek, fromdate, todate, 
                 mon, monhours, tues, tueshours, wed, wedhours, thur, thurhours, 
@@ -44,18 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!$stmt) {
             throw new Exception("Query failed: " . $con->error);
         }
-        // Calculate total hours
         
-        // Check if total hours exceed 40
-        if ($totalHours > 48) {
-            throw new Exception("Total work hours cannot exceed 48 hours per week");
-        }
         // Return success response for AJAX
         echo json_encode([
             'status' => 'success',
             'message' => 'Payroll policy saved successfully!'
         ]);
-        exit();
+      
 
     } catch (Exception $e) {
         // Return error response for AJAX
