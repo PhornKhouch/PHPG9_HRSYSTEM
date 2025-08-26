@@ -6,11 +6,7 @@ include("../../Config/conect.php");
     <table id="companyTable" class="table table-striped" style="width:100%">
         <thead>
             <tr>
-                <th style="width: 150px">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
-                        Add
-                    </button>
-                </th>
+                <th style="width: 150px"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Add</button></th>
                 <th>Company Code</th>
                 <th>Company Name</th>
                 <th>Status</th>
@@ -25,10 +21,10 @@ include("../../Config/conect.php");
             ?>
                     <tr data-id="<?php echo $row['Code']; ?>">
                         <td>
-                            <button class="btn btn-primary btn-sm edit-btn"
-                                data-code="<?php echo $row['Code']; ?>"
-                                data-name="<?php echo $row['Description']; ?>"
-                                data-status="<?php echo $row['Status']; ?>">
+                            <button class="btn btn-primary btn-sm edit-btn" 
+                                    data-code="<?php echo $row['Code']; ?>"
+                                    data-name="<?php echo $row['Description']; ?>"
+                                    data-status="<?php echo $row['Status']; ?>">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                             <button class="btn btn-danger btn-sm delete-btn">
@@ -113,9 +109,18 @@ include("../../Config/conect.php");
         </div>
     </div>
 </div>
-<?php
-    include '../../root/DataTable.php';
-?>
+
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
@@ -124,14 +129,14 @@ include("../../Config/conect.php");
             responsive: true,
             lengthMenu: [5, 10, 25, 50],
             pageLength: 10,
-            order: [
-                [1, 'asc']
-            ],
-            columnDefs: [{
-                targets: 0,
-                orderable: false,
-                searchable: false
-            }]
+            order: [[1, 'asc']],
+            columnDefs: [
+                {
+                    targets: 0,
+                    orderable: false,
+                    searchable: false
+                }
+            ]
         });
 
         // Add new company
@@ -140,8 +145,9 @@ include("../../Config/conect.php");
                 $('#addForm')[0].reportValidity();
                 return;
             }
+
             $.ajax({
-                url: "../../action/CompanyInfor/create.php",
+                url: "../../action/JobAnalysis/create.php",
                 type: "POST",
                 data: {
                     type: "Company",
@@ -166,14 +172,15 @@ include("../../Config/conect.php");
                         $('#addModal').modal('hide');
                         $('.modal-backdrop').remove();
                         $('body').removeClass('modal-open');
-
+                        
                         $('#code').val('');
                         $('#name').val('');
                         $('#status').val('Active');
 
-                        showToast('success', response);
-                    } else {
-                        showToast('danger', response);
+                        showToast('success', response); 
+                    }
+                    else{
+                        showToast('danger', response); 
                     }
                 },
                 error: function(xhr) {
@@ -207,7 +214,7 @@ include("../../Config/conect.php");
             const status = $('#edit_status').val();
 
             $.ajax({
-                url: "../../action/CompanyInfor/update.php",
+                url: "../../action/JobAnalysis/update.php",
                 type: "POST",
                 data: {
                     "type": "Company",
@@ -256,11 +263,11 @@ include("../../Config/conect.php");
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "../../action/CompanyInfor/delete.php",
+                        url: "../../action/JobAnalysis/delete.php",
                         type: "POST",
-                        data: {
+                        data: { 
                             "type": "Company",
-                            "code": code
+                            "code": code 
                         },
                         success: function(response) {
                             table.row(row).remove().draw(false);
@@ -287,32 +294,26 @@ include("../../Config/conect.php");
                     toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-            Toast.fire({
-                icon: icon,
-                title: title
-            });
+            Toast.fire({ icon, title });
         }
     });
 </script>
 
 <style>
-    .dataTables_wrapper .dataTables_length select {
-        width: 60px;
-    }
-
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        margin-right: 0.25rem;
-    }
-
-    .modal-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .modal-footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #dee2e6;
-    }
+.dataTables_wrapper .dataTables_length select {
+    width: 60px;
+}
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    margin-right: 0.25rem;
+}
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
 </style>
