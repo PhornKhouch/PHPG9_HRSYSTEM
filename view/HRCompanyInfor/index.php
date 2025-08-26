@@ -26,10 +26,10 @@ include("../../root/Header.php");
                 <?php include("TapDivision.php"); ?>
             </div>
             <div class="tab-pane fade" id="nav-level" role="tabpanel" aria-labelledby="nav-level-tab">
-                
+                <?php include("TapLevel.php"); ?>
             </div>
             <div class="tab-pane fade" id="nav-position" role="tabpanel" aria-labelledby="nav-position-tab">
-                
+                <?php include("TabPosition.php"); ?>    
             </div>
         </div>
     </div>

@@ -110,6 +110,17 @@ include("../../Config/conect.php");
     </div>
 </div>
 
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
@@ -128,7 +139,7 @@ include("../../Config/conect.php");
             }
 
             $.ajax({
-                url: "../../action/CompanyInfor/create.php",
+                url: "../../action/JobAnalysis/create.php",
                 type: "POST",
                 data: {
                     type: "Department",
@@ -153,7 +164,7 @@ include("../../Config/conect.php");
                         // Hide modal and clean up
                         const modal = bootstrap.Modal.getInstance($('#addDeptModal'));
                         modal.hide();
-                        // $('.modal-backdrop').remove();
+                        $('.modal-backdrop').remove();
                         $('body').removeClass('modal-open');
                         
                         // Clear form
@@ -198,7 +209,7 @@ include("../../Config/conect.php");
             const status = $('#edit_dept_status').val();
 
             $.ajax({
-                url: "../../action/CompanyInfor/update.php",
+                url: "../../action/JobAnalysis/update.php",
                 type: "POST",
                 data: {
                     "type": "Department",
@@ -220,7 +231,7 @@ include("../../Config/conect.php");
                     row.data(rowData).draw(false);
 
                     $('#editDeptModal').modal('hide');
-                    // $('.modal-backdrop').remove();
+                    $('.modal-backdrop').remove();
                     $('body').removeClass('modal-open');
 
                     showToast('success', response);
@@ -247,7 +258,7 @@ include("../../Config/conect.php");
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "../../action/CompanyInfor/delete.php",
+                        url: "../../action/JobAnalysis/delete.php",
                         type: "POST",
                         data: {
                             "type": "Department",
