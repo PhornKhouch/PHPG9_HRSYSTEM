@@ -139,7 +139,7 @@ include("../../Config/conect.php");
             }
 
             $.ajax({
-                url: "../../action/JobAnalysis/create.php",
+                url: "../../action/CompanyInfor/create.php",
                 type: "POST",
                 data: {
                     type: "Department",
@@ -209,7 +209,7 @@ include("../../Config/conect.php");
             const status = $('#edit_dept_status').val();
 
             $.ajax({
-                url: "../../action/JobAnalysis/update.php",
+                url: "../../action/CompanyInfor/update.php",
                 type: "POST",
                 data: {
                     "type": "Department",
@@ -258,7 +258,7 @@ include("../../Config/conect.php");
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "../../action/JobAnalysis/delete.php",
+                        url: "../../action/CompanyInfor/delete.php",
                         type: "POST",
                         data: {
                             "type": "Department",
