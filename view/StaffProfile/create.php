@@ -225,48 +225,246 @@ include '../../Config/conect.php'
                                 </div>
 
 
-                               
+
                             </div>
                         </div>
 
-                          <!-- Contact Information Tab -->
-                    <div class="tab-pane fade" id="contactInfo">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="contact" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contact" name="contact">
+                        <!-- Contact Information Tab -->
+                        <div class="tab-pane fade" id="contactInfo">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="contact" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="contact" name="contact">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email">
-                            </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                </div>
                             </div>
                         </div>
-                    </div
+                    </div>
+
+                    <!-- Family Information Tab -->
+                    <div class="tab-pane fade" id="familyInfo">
+                        <div class="card mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Family Members</h6>
+                                <button type="button" class="btn btn-success btn-sm" id="addFamilyMember">
+                                    <i class="fas fa-plus"></i> Add Member
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="familyMembersTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Relation Type</th>
+                                                <th>Gender</th>
+                                                <th>Is Tax</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
 
-                        <div class="d-flex justify-content-start mt-3">
-                            <button type="submit" class="btn btn-primary me-2" name="btnSubmit">Save</button>
-                            <a href="index.php" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    
+                    <div class="d-flex justify-content-start mt-3">
+                        <button type="submit" class="btn btn-primary me-2" name="btnSubmit">Save</button>
+                        <a href="index.php" class="btn btn-secondary">Cancel</a>
+                    </div>
+
                 </form>
 
             </div>
         </div>
     </div>
+
+
+    <!-- Family Member Modal -->
+    <div class="modal fade" id="familyMemberModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Family Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="familyMemberForm">
+                        <input type="hidden" id="familyMemberIndex" value="">
+                        <div class="mb-3">
+                            <label for="relationName" class="form-label  ">Name</label>
+                            <input type="text" class="form-control" id="relationName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="relationType" class="form-label  ">Relation Type</label>
+                            <select class="form-select" id="relationType">
+                                <option value="">Select Relation</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Child">Child</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Sibling">Sibling</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="relationGender" class="form-label  ">Gender</label>
+                            <select class="form-select" id="relationGender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="isTax">
+                                <label class="form-check-label" for="isTax">Include in Tax Calculation</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveFamilyMember">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 <script>
     $(document).ready(function() {
+        var listFamily = [];
+        var Familypopup = document.getElementById('familyMemberModal');
+        var familyMemberModal = new bootstrap.Modal(Familypopup);
+        // Add family member button click
+        $('#addFamilyMember').click(function() {
+            $('#familyMemberIndex').val('');
+            $('#familyMemberForm')[0].reset();
+            familyMemberModal.show();
+        });
+        $("#saveFamilyMember").click(function() {
+            var name = $("#relationName").val();
+            var retype = $("#relationType").val();
+            var gender = $("#relationGender").val();
+            var istax = $("#isTax").is(":checked");
+            const index = $('#familyMemberIndex').val();
+           
+            if (index === '') {
+                // Add new member
+                listFamily.push({
+                    name: name,
+                    retype: retype,
+                    gender: gender,
+                    istax: istax
+                });
+            } else {
+                // Update existing member
+                listFamily[parseInt(index)] = {
+                    name: name,
+                    retype: retype,
+                    gender: gender,
+                    istax: istax
+                };
+            }
+            DisplayFamily(listFamily);
+        });
+
+
+        function DisplayFamily(Listitem) {
+            var html = "";
+            for (var i in Listitem) {
+                html += `
+                    <tr>
+                        <td>${Listitem[i].name}</td>
+                        <td>${Listitem[i].retype}</td>
+                        <td>${Listitem[i].gender}</td>
+                        <td>${Listitem[i].istax}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary edit-family" data-index="${i}">Edit</button>
+                            <button type="button" class="btn btn-sm btn-danger btndelete"  data-index="${i}">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }
+            const tbody = $('#familyMembersTable tbody');
+            tbody.empty();
+            tbody.append(html);
+
+            familyMemberModal.hide();
+        }
+
+        $(document).on("click", ".btndelete", function() {
+            var index = $(this).data("index");
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    listFamily.splice(index, 1); //index remove
+                    DisplayFamily(listFamily);
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Family member removed'
+                    });
+                }
+            });
+        })
+
+
+            // Edit family member
+        $(document).on('click', '.edit-family', function() {
+            
+            const index = $(this).data('index');
+            const member = listFamily[index];
+
+            $('#familyMemberIndex').val(index);
+            $('#relationName').val(member.name);
+            $('#relationType').val(member.retype);
+            $('#relationGender').val(member.gender);
+            $('#isTax').prop('checked', member.istax === 1);
+
+            familyMemberModal.show();
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     })
 </script>
