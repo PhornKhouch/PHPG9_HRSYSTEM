@@ -17,7 +17,7 @@ include '../../Config/conect.php'
                 </a>
             </div>
             <div class="card-body">
-                <form action="../../action/StaffProfile/create.php" method="post" id="staffForm">
+                <form action="../../action/StaffProfile/create.php" method="POST" id="staffForm">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#personalInfo">
@@ -459,7 +459,43 @@ include '../../Config/conect.php'
 
 
 
-
+// Form submission
+    $('#staffForm').submit(function(e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this);
+        // Add family members data
+        formData.append('familyMembers', JSON.stringify(listFamily));
+        $.ajax({
+            url: '../../action/StaffProfile/create.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                 console.log('Success Response:', response);
+                if (response.status === 'success') {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location.href = 'index.php';
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message || 'Error creating staff profile',
+                        icon: 'error'
+                    });
+                }
+            },
+           
+        });
+    });
 
 
 
