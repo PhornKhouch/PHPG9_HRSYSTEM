@@ -623,6 +623,12 @@ if (!isset($_SESSION['csrf_token'])) {
 
 <script>
 $(document).ready(function() {
+    // Initialize Select2
+    $('#position').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Select Position',
+        allowClear: true
+    });
     // Initialize Toast notification
     const Toast = Swal.mixin({
         toast: true,

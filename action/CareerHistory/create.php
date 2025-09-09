@@ -3,13 +3,13 @@ include("../../Config/conect.php");
 session_start();
 
 try {
-    // Validate required fields
-    $requiredFields = ['employeeID', 'startDate', 'careerCode'];
-    foreach ($requiredFields as $field) {
-        if (empty($_POST[$field])) {
-            throw new Exception("Please fill in all required fields");
+        // Validate required fields
+        $requiredFields = ['employeeID', 'startDate', 'careerCode'];
+        foreach ($requiredFields as $field) {
+            if (empty($_POST[$field])) {
+                throw new Exception("Please fill in all required fields");
+            }
         }
-    }
 
     // Get form data
     $employeeID = $_POST['employeeID'];

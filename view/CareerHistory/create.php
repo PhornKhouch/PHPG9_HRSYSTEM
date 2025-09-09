@@ -187,12 +187,13 @@ session_start();
                     $.ajax({
                         url: '../../action/CareerHistory/getEmployee.php',
                         data: {
-                            empCode: empCode,
-                            action: 'getDetails'
+                            "empCode": empCode,
+                            "action": 'getDetails'
                         },
                         method: 'GET',
                         success: function(response) {
                             const data = JSON.parse(response);//convert json to object
+                            console.log(data);
                             $('#company').val(data.CompanyName);
                             $('#department').val(data.DepartmentName);
                             $('#department_code').val(data.Department);
@@ -200,13 +201,6 @@ session_start();
                             $('#position_code').val(data.Position);
                             $('#division').val(data.DivisionName);
                             $('#level').val(data.LevelName);
-                        },
-                        error: function() {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Failed to fetch employee details'
-                            });
                         }
                     });
                 } else {
@@ -240,28 +234,6 @@ session_start();
 
             // Form validation
             $('#careerHistoryForm').on('submit', function(e) {
-                e.preventDefault();
-                
-                // Validate required fields
-                if (!this.checkValidity()) {
-                    e.stopPropagation();
-                    $(this).addClass('was-validated');
-                    return;
-                }
-
-                // Additional validation for dates
-                const startDate = $('#startDate').val();
-                const endDate = $('#endDate').val();
-                if (endDate && endDate < startDate) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid Dates',
-                        text: 'End date cannot be earlier than start date'
-                    });
-                    return;
-                }
-
-                // Submit the form
                 this.submit();
             });
 
